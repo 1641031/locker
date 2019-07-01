@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+<!-- app_content -->
+{% block app_content %}
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2 col-xs-2">
+                    <a c href="{{ url_for('index') }}">
+                            <img class="" style="max-height: 70px;" src="{{ url_for('static', filename='images/back.svg') }}" />
+                        </a>
+            </div>
+            <div class="col-sm-8 col-xs-8 text-center">
+                <h4>Locker</h4>
+            </div>
+
+            <div class="col-sm-2 col-xs-2">
+                <a href="{{ url_for('createlocker') }}">
+                    <img class="" style="max-height: 70px;" alt="Brand" src="{{ url_for('static', filename='images/plus.svg') }}" />
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- <div class="row">
+                <div class="col-md-8">.col-md-8</div>
+                <div class="col-md-4">.col-md-4</div>
+        </div> -->
+</nav>
+{%  if lockers %}
+{% for locker in lockers %}
+<span style="color: red;">[{{ locker.lockername }}]</span>
+{% endfor %}
+{% endif %}
+
+
+<!-- <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    空间1
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                <ul>
+                    <li> <a href=""> 房屋契约</a></li>
+                    <li> <a href="">手机契约</a></li>
+                    <li><a href="">在中资料和物品</a></li>
+                    <li><a href="">邮局相关ラベル</a></li>
+                    <li>...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                    aria-expanded="false" aria-controls="collapseTwo">
+                    空间2
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+                <ul>
+                    <li> <a href="">N1日本語能力</a></li>
+                    <li> <a href="">基本情報技術者</a></li>
+                    <li><a href="">情報セキュリティーマネジメント</a></li>
+                    <li><a href="">ITパスポート</a></li>
+                    <li>...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
+                    aria-expanded="false" aria-controls="collapseThree">
+                    空间3
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+                <ul>
+                    <li> <a href="">日语书</a></li>
+                    <li> <a href="">JavaScript高级编程</a></li>
+                    <li><a href="">IOT物联网</a></li>
+                    <li><a href="">Arduino编程</a></li>
+                    <li>...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+{% endblock %}

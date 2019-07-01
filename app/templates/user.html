@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>User: {{ user.username }}</h1>
+    <hr>
+    {% for post in posts %}
+    <p>
+    {{ post.author.username }} says: <b>{{ post.body }}</b>
+    </p>
+    {% endfor %}
+
+    <td>
+            <h1>User: {{ user.username }}</h1>
+            {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+           
+           
+            {% if user.last_seen %}
+            <p>Last seen on: {{ moment(user.last_seen).format('LLL') }}</p>
+            {% endif %}
+        </td>
+
+
+            <h1>Edit Profile</h1>
+   
+ 
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+<!-- 引入基本模板 -->
+
+<!-- app_content模板标签 -->
+{% block app_content %}
+    <!-- <h1>Hi, {{ current_user.username }}!</h1>
+    {% for post in posts %}
+    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+    {% endfor %} -->
+
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <a href="{{ url_for('lockerview') }}" class="thumbnail">
+                <img src="{{ url_for('static', filename='images/locker.png') }}" class="img-thumbnail img-responsive center-block" alt="Responsive image">
+                    <div class="caption text-center">
+                        <h3>Locker设置</h3>
+                    </div>
+                </a>
+        
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-3">
+            <a href="{{ url_for('goods') }}" class="thumbnail">
+                    <img src="{{ url_for('static', filename='images/goods.svg') }}" class="img-thumbnail img-responsive center-block" alt="Responsive image">
+                        <div class="caption text-center">
+                            <h3>物品</h3>
+                        </div>
+                    </a>
+        </div>
+
+        <!-- <div class="col-xs-6 col-sm-6 col-md-3">
+                <a href="login.html" class="thumbnail">
+                        <img src="{{ url_for('static', filename='images/search.svg') }}" class="img-thumbnail img-responsive center-block" alt="Responsive image">
+                            <div class="caption text-center">
+                                <h3>查找物品</h3>
+                            </div>
+                        </a>
+            </div> -->
+            <div class="col-xs-6 col-sm-6 col-md-3">
+                    <a href="login.html" class="thumbnail">
+                            <img src="{{ url_for('static', filename='images/return.svg') }}" class="img-thumbnail img-responsive center-block" alt="Responsive image">
+                                <div class="caption text-center">
+                                    <h3>返还物品</h3>
+                                </div>
+                            </a>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3">
+                        <a href="login.html" class="thumbnail">
+                                <img src="{{ url_for('static', filename='images/trash.svg') }}" class="img-thumbnail img-responsive center-block" alt="Responsive image">
+                                    <div class="caption text-center">
+                                        <h3>注销物品</h3>
+                                    </div>
+                                </a>
+                    </div>
+                   
+{% endblock %}

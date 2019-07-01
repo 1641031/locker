@@ -1,0 +1,2 @@
+FLASK_APP=locker.py
+FLASK_ENV=development

@@ -1,0 +1,37 @@
+:root {
+    font-size: 10px;
+    --min-font-size: 1.4rem;
+    --max-font-size: 1.8rem;
+    --min-screen: 600px;
+    --max-screen: 1200px;
+}
+
+
+@media (min-width: var(--max-screen)) {
+    h3{
+        font-size: var(max-font-size);
+    }
+}
+
+@media (max-width: var(min-screen)) {
+    h3{
+        font-size: var(min-font-size);
+    }
+}
+
+
+
+
+
+
+/* centered columns styles */
+/* .row-centered {
+    text-align:center;
+    background: red;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    text-align:left;
+    margin-right:-4px;
+} */

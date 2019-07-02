@@ -56,12 +56,18 @@ class EditLocker(FlaskForm):
     about_locker = TextAreaField('About Locker', validators=[Length(min=0, max=140)])
     submit = SubmitField('Submit')
 
-
+#删除储物柜
+class DeleteLocker(FlaskForm):
+    lockername = StringField('Lockername', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
 
 #物品视图界面
 class GoodsView(FlaskForm):
     goodsname = StringField('Goodsname', validators=[DataRequired()])
 
-
+#添加分类标签
+class CreateCategory(FlaskForm):
+    name = StringField('Lockername', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 

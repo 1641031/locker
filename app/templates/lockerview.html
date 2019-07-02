@@ -14,7 +14,7 @@
             <div class="col-sm-8 col-xs-8 text-center">
                 <h4>Locker</h4>
             </div>
-
+      
             <div class="col-sm-2 col-xs-2">
                 <a href="{{ url_for('createlocker') }}">
                     <img class="" style="max-height: 70px;" alt="Brand" src="{{ url_for('static', filename='images/plus.svg') }}" />
@@ -29,11 +29,42 @@
                 <div class="col-md-4">.col-md-4</div>
         </div> -->
 </nav>
-{%  if lockers %}
-{% for locker in lockers %}
-<span style="color: red;">[{{ locker.lockername }}]</span>
-{% endfor %}
-{% endif %}
+
+<!-- table -->
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>储存柜名称</th>
+            <th>备注</th>
+            <th>对应步进机参数</th>
+            <th>创建用户</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%  if lockers %}
+        {% for locker in lockers %}
+            <tr>
+                <th>{{ loop.index }}</th>
+                <th>{{ locker.lockername }}</th>
+                <th>{{ locker.about_locker }}</th>
+                <th>{{ locker.lockernumber }}</th>
+                <th>{{ locker.author.username }}</th>
+                <th>
+                    <a href="{{ url_for('edit_locker', lockerid=locker.id) }}" >編集</a>
+                    <a href="{{ url_for('delete_locker', lockerid=locker.id) }}" >删除</a>
+                </th>
+            </tr>
+       
+        {% endfor %}
+        {% endif %}
+
+        <dl>
+    </tbody>
+  </table>
+
+
 
 
 <!-- <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">

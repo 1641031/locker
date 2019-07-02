@@ -4,15 +4,27 @@
 
 <nav class="navbar navbar-default">
         <div class="container-fluid">
- 
-            <a class="" href="{{ url_for('index') }}" style="width: 50px;display: block;float: left;">
-              <img class="" alt="Brand" src="{{ url_for('static', filename='images/back.svg') }}">
-            </a>
-            
           
-          <a class="" href="#" style="width: 50px;display: block;float:right">
-                <img class="" alt="Brand" src="{{ url_for('static', filename='images/plus.svg') }}">
-              </a>
+          <div class="row">
+            <div class="col-sm-2 col-xs-2">
+                <a class="" href="{{ url_for('index') }}" >
+                    <img class="" style="max-height: 70px;" alt="Brand" src="{{ url_for('static', filename='images/back.svg') }}">
+                  </a>
+            </div>
+            <div class="col-sm-6 col-xs-6 text-center">
+              <h3>Goods</h3>
+              </div>
+                <div class="col-sm-2 col-xs-2">
+                    <a href="{{ url_for('create_category') }}">
+                        <img class="" style="max-height: 70px;" alt="Brand" src="{{ url_for('static', filename='images/plus2.svg') }}" />
+                    </a>
+                </div>
+              <div class="col-sm-2 col-xs-2">
+                  <a class="" href="#" >
+                      <img class="" style="max-height: 70px;" alt="Brand" src="{{ url_for('static', filename='images/plus.svg') }}">
+                    </a>
+              </div>
+          </div>
         </div>
       </nav>
     <!-- 内容 -->
@@ -27,13 +39,30 @@
               </div>
               <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
-                        <ul>
-                                <li> <a href=""> 房屋契约</a></li>
-                                <li>  <a href="">手机契约</a></li>
-                                <li><a href="">在中资料和物品</a></li>
-                                <li><a href="">邮局相关ラベル</a></li>
-                                <li>...</li>
-                        </ul>
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>物品名称</th>
+                            <th>备注</th>
+                            <th>时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <th>1</th>
+                                <th>房屋契约</th>
+                                <th>重要文件</th>
+                                <th>2019/07/02</th>
+                                <th>
+                                    <a href="">編集</a>
+                                    <a href="">删除</a>
+                                </th>
+                            </tr>
+                        <dl>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -57,26 +86,31 @@
                 </div>
               </div>
             </div>
+
+            {% if categorys %}
+            {% for category in categorys %}
             <div class="panel panel-default">
               <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    书籍
+                    {{ category.name }}
                   </a>
                 </h4>
               </div>
               <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                 <div class="panel-body">
                     <ul>
-                            <li> <a href="">日语书</a></li>
+                            <!-- <li> <a href="">日语书</a></li>
                             <li>  <a href="">JavaScript高级编程</a></li>
                             <li><a href="">IOT物联网</a></li>
                             <li><a href="">Arduino编程</a></li>
-                            <li>...</li>
+                            <li>...</li> -->
                     </ul>
                 </div>
               </div>
             </div>
+            {% endfor %}
+            {% endif %}
           </div>
 
 {% endblock %}

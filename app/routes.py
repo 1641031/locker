@@ -1,7 +1,8 @@
 # 全局域包
-from app.forms import CreateLocker
+import logging
+
 from datetime import datetime
-from app.forms import RegistrationForm
+
 from app import db
 from flask_login import logout_user
 from werkzeug.urls import url_parse
@@ -19,7 +20,7 @@ from flask import flash, redirect, url_for
 from flask_login import current_user, login_user
 
 #app/models.py ----User类
-from app.models import User
+from app.models import User,Locker,Category
 
 
 # -------------------------------------------------------------
@@ -87,11 +88,14 @@ def logout():
 
 # 用户注册视图------------------------------
 # app/db.py
+from app.forms import RegistrationForm
 # app/forms.py ---RegistrationForm类
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    # 确定用户是否登录
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+    #获取表单中的注册表类，建立实例
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
@@ -115,11 +119,25 @@ def before_request():
 @app.route('/lockerview', methods=['GET', 'POST'])
 @login_required
 def lockerview():
-    lockers = Locker.query.all()
+    #普通用户权限
+    # nowuser = User.query.filter_by(username=current_user.username).first
+    #最高权限
+    # if current_user.username == "user":
+    if Locker.query.all():
+        lockers = Locker.query.all()
+    else:
+        lockers = ""
+    # else:
+    #     print(nowuser.Lockers)
+    #     if nowuser.Lockers:
+    #         lockers = nowuser.Lockers
+    #     else:
+    #         lockers = ""
     return render_template('lockerview.html', lockers=lockers)
 
 
 # 储物空间创建
+from app.forms import CreateLocker
 @app.route('/createlocker', methods=['GET', 'POST'])
 @login_required
 def createlocker():
@@ -127,7 +145,7 @@ def createlocker():
     # 如果触发form实例对象中的submit的该事件。
     if form.validate_on_submit():
         locker = Locker(lockername=form.lockername.data,
-                        lockernumber=form.lockernumber.data, about_locker=form.about_locker.data)
+                        lockernumber=form.lockernumber.data, about_locker=form.about_locker.data,author=current_user)
         db.session.add(locker)
         db.session.commit()
         flash("Your locker is have been created!")
@@ -135,9 +153,71 @@ def createlocker():
     return render_template('createlocker.html', title='CreateLocker', form=form)
 
 
+# 编辑储物空间
+from app.forms import EditLocker
+@app.route('/edit_locker/<lockerid>', methods=['GET','POST'])
+@login_required
+def edit_locker(lockerid):
+    form = EditLocker()
+    locker = Locker.query.get(lockerid)
+    if form.validate_on_submit():
+        locker.lockername = form.lockername.data
+        locker.lockernumber = form.lockernumber.data
+        locker.about_locker = form.about_locker.data
+        db.session.add(locker)
+        db.session.commit()
+        flash("your edit is over")
+        return redirect(url_for('lockerview'))
+    elif request.method == 'GET':
+        form.lockername.data = locker.lockername
+        form.lockernumber.data = locker.lockernumber
+        form.about_locker.data = locker.about_locker
+    return render_template('edit_locker.html', title="Edit locker",form=form)
+
+# 删除储物空间
+from app.forms import DeleteLocker
+@app.route('/delete_locker/<lockerid>', methods=['GET','POST'])
+@login_required
+def delete_locker(lockerid):
+    form = DeleteLocker()
+
+    if form.validate_on_submit():
+        locker = Locker.query.get(lockerid)
+        if locker.lockername == form.lockername.data:
+            db.session.delete(locker)
+            db.session.commit()
+            flash("space is deleted!")
+            return redirect(url_for('lockerview'))
+        else:
+            form.lockername = ""
+            flash("name is wrong!you have to check it!")
+    return render_template('delete_locker.html', title="delete locker",form=form)
+
+
+
+#创建标签
+from app.forms import CreateCategory
+@app.route('/create_category', methods=['GET','POST'])
+@login_required
+def create_category():
+    form = CreateCategory()
+    if form.validate_on_submit():
+        category = Category(name=form.name.data)
+        db.session.add(category)
+        db.session.commit()
+        flash("Category is successded")
+        return redirect(url_for('goods'))
+    return render_template('create_category.html', title='Create_Category', form=form)
+
+
+
 # #物品页面 --总展示页面-----------
 @app.route('/goods', methods=['GET', 'POST'])
 # 当匿名用户(未登录的用户)查看首页时，无法重定向到登录界面
 @login_required
 def goods():
-    return render_template('goods.html')
+    if Category.query.all():
+        categorys = Category.query.all()
+    else:
+        categorys = ""
+    return render_template('goods.html',categorys=categorys)

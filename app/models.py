@@ -82,8 +82,31 @@ class Locker(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     lockername = db.Column(db.String(32), index=True, unique=True)
     about_locker = db.Column(db.String(140))
+    lockernumber = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return '<Post {}>'.format(self.lockername)
+
+class goods(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    goodsname = db.Column(db.String(32), index=True, unique=True)
+    about_goods = db.Column(db.String(140))
+    #储物箱
+    locker_id = db.Column(db.Integer, db.ForeignKey('locker.id'),nullable=False)
+    locker = db.relationship('Locker',backref=db.backref('goods', lazy=True))
+    #分别标签
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'),nullable=False)
+    category = db.relationship('Category',backref=db.backref('goods', lazy=True))
+
+    def __repr__(self):
+        return '<Post {}>'.format(self.goodsname)
+
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return '<Category {}>'.format(self.name)
 

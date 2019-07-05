@@ -20,7 +20,7 @@ from flask import flash, redirect, url_for
 from flask_login import current_user, login_user
 
 #app/models.py ----User类
-from app.models import User,Locker,Category
+from app.models import User,Locker,Category,Goods
 
 
 # -------------------------------------------------------------
@@ -133,7 +133,7 @@ def lockerview():
     #         lockers = nowuser.Lockers
     #     else:
     #         lockers = ""
-    return render_template('lockerview.html', lockers=lockers)
+    return render_template('/locker/lockerview.html', lockers=lockers)
 
 
 # 储物空间创建
@@ -150,7 +150,7 @@ def createlocker():
         db.session.commit()
         flash("Your locker is have been created!")
         return redirect(url_for('lockerview'))
-    return render_template('createlocker.html', title='CreateLocker', form=form)
+    return render_template('/locker/createlocker.html', title='CreateLocker', form=form)
 
 
 # 编辑储物空间
@@ -172,7 +172,7 @@ def edit_locker(lockerid):
         form.lockername.data = locker.lockername
         form.lockernumber.data = locker.lockernumber
         form.about_locker.data = locker.about_locker
-    return render_template('edit_locker.html', title="Edit locker",form=form)
+    return render_template('/locker/edit_locker.html', title="Edit locker",form=form)
 
 # 删除储物空间
 from app.forms import DeleteLocker
@@ -191,11 +191,11 @@ def delete_locker(lockerid):
         else:
             form.lockername = ""
             flash("name is wrong!you have to check it!")
-    return render_template('delete_locker.html', title="delete locker",form=form)
+    return render_template('/locker/delete_locker.html', title="delete locker",form=form)
 
 
 
-#创建标签
+#创建分类标签
 from app.forms import CreateCategory
 @app.route('/create_category', methods=['GET','POST'])
 @login_required
@@ -207,11 +207,107 @@ def create_category():
         db.session.commit()
         flash("Category is successded")
         return redirect(url_for('goods'))
-    return render_template('create_category.html', title='Create_Category', form=form)
+    return render_template('/category/create_category.html', title='Create_Category', form=form)
+
+#编辑分类标签
+from app.forms import EditCategory
+@app.route('/edit_category/<categoryid>', methods=['GET','POST'])
+@login_required
+def edit_category(categoryid):
+    form = EditCategory()
+    category = Category.query.get(categoryid)
+    if form.validate_on_submit():
+        category.name = form.name.data
+        db.session.add(category)
+        db.session.commit()
+        flash("your category is deleted")
+        return redirect(url_for('goods'))
+    elif request.method == 'GET':
+        form.name.data = category.name
+    return render_template('/category/edit_category.html', title='Edit_Category', form=form)
 
 
+#删除分类标签
+from app.forms import DeleteCategory
+@app.route('/delete_category/<categoryid>', methods=['GET','POST'])
+@login_required
+def delete_category(categoryid):
+    form = DeleteCategory()
+    if form.validate_on_submit():
+        category = Category.query.get(categoryid)
+        if category.name == form.name.data:
+            db.session.delete(category)
+            db.session.commit()
+            flash("Category is deleted!")
+            return redirect(url_for('goods'))
+        else:
+            form.name = ""
+            flash("name is wrong!you have to check it!")
+    return render_template('/category/delete_category.html', title="delete category",form=form)
 
-# #物品页面 --总展示页面-----------
+
+#登录物品信息
+from app.forms import Login_Goods
+@app.route('/login_goods/', methods=['GET','POST'])
+@login_required
+def login_goods():
+
+    form = Login_Goods()
+    # form = Login_Goods(request.method, obj=locker)
+    # form.locker_id.choices = [(g.lockername) for g in locker]
+    # 如果触发form实例对象中的submit的该事件。
+    if form.validate_on_submit():
+        goods = Goods(goodsname=form.goodsname.data,locker=form.locker.data,category=form.category.data,about_goods=form.about_goods.data)
+        db.session.add(goods)
+        db.session.commit()
+        # print(form.locker.data)
+        flash("Your goods is have been created!")
+        return redirect(url_for('goods'))
+    return render_template('/goods/login_goods.html', title='Login_Good', form=form)
+
+#编辑物品信息
+from app.forms import Edit_Goods
+@app.route('/edit_goods/<goodsid>', methods=['GET','POST'])
+@login_required
+def edit_goods(goodsid):
+    form = Edit_Goods()
+    goods = Goods.query.get(goodsid)
+    if form.validate_on_submit():
+        goods.goodsname = form.goodsname.data
+        goods.about_goods = form.about_goods.data
+        goods.locker = form.locker.data
+        goods.category = form.category.data
+        db.session.add(goods)
+        db.session.commit()
+        flash("your goods is Edited")
+        return redirect(url_for('goods'))
+    elif request.method == 'GET':
+        form.goodsname.data = goods.goodsname
+        form.about_goods.data =  goods.about_goods
+        form.locker.data = goods.locker
+        form.category.data =  goods.category
+    return render_template('/goods/edit_goods.html', title='Edit_Category', form=form)
+
+#删除物品
+#删除分类标签
+from app.forms import Delete_Goods
+@app.route('/delete_goods/<goodsid>', methods=['GET','POST'])
+@login_required
+def delete_goods(goodsid):
+    form = Delete_Goods()
+    if form.validate_on_submit():
+        goods= Goods.query.get(goodsid)
+        if goods.goodsname == form.goodsname.data:
+            db.session.delete(goods)
+            db.session.commit()
+            flash("Goods is deleted!")
+            return redirect(url_for('goods'))
+        else:
+            form.name = ""
+            flash("name is wrong!you have to check it!")
+    return render_template('/goods/delete_goods.html', title="delete goods",form=form)
+
+##物品页面 --总展示页面-----------
 @app.route('/goods', methods=['GET', 'POST'])
 # 当匿名用户(未登录的用户)查看首页时，无法重定向到登录界面
 @login_required
@@ -220,4 +316,8 @@ def goods():
         categorys = Category.query.all()
     else:
         categorys = ""
-    return render_template('goods.html',categorys=categorys)
+    if Goods.query.all():
+        goods = Goods.query.all()
+    else:
+        goods = ""
+    return render_template('/goods/goods.html',categorys=categorys,goods=goods)

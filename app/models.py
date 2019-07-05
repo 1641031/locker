@@ -88,7 +88,7 @@ class Locker(db.Model):
     def __repr__(self):
         return '<Post {}>'.format(self.lockername)
 
-class goods(db.Model):
+class Goods(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     goodsname = db.Column(db.String(32), index=True, unique=True)
     about_goods = db.Column(db.String(140))

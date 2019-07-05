@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<nav class="navbar navbar-default">
+        <div class="container-fluid">
+          
+          <div class="row">
+            <div class="col-sm-2 col-xs-2">
+                <a class="" href="{{ url_for('index') }}" >
+                    <img class="" style="max-height: 70px;" alt="Brand" src="{{ url_for('static', filename='images/back.svg') }}">
+                  </a>
+            </div>
+            <div class="col-sm-6 col-xs-6 text-center">
+              <h3>Goods</h3>
+              </div>
+                <div class="col-sm-2 col-xs-2">
+                    <a href="{{ url_for('create_category') }}">
+                        <img class="" style="max-height: 70px;" alt="Brand" src="{{ url_for('static', filename='images/plus2.svg') }}" />
+                    </a>
+                </div>
+              <div class="col-sm-2 col-xs-2">
+                  <a class="" href="{{ url_for('login_goods') }}" >
+                      <img class="" style="max-height: 70px;" alt="Brand" src="{{ url_for('static', filename='images/plus.svg') }}">
+                    </a>
+              </div>
+          </div>
+        </div>
+      </nav>
+    <!-- 内容 -->
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            {% if categorys %}
+            {% for category in categorys %}
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading{{ category.id }}">
+                <h4 class="panel-title">
+                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ category.id }}" aria-expanded="false" aria-controls="collapse{{ category.id }}">
+                    {{ category.name }}
+                  </a>
+                  <div class="pull-right">
+                    <a href="{{ url_for('edit_category',categoryid=category.id) }}">编辑</a>
+                    <a href="{{ url_for('delete_category',categoryid=category.id) }}">删除</a>
+                  </div>
+                </h4>
+              </div>
+              <div id="collapse{{ category.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ category.id }}">
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>物品名称</th>
+                                <th>备注</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% if goods %}
+                          {% for item in goods %}
+                          {% if item.category.name == category.name %}
+                                <tr>
+                                    <th>{{loop.index}}</th>
+                                    <th>{{item.goodsname}}</th>
+                                    <th>{{item.about_goods}}</th>
+                                    <th>
+                                      <a href="">取出登记</a>
+                                      <a href="">记录查询</a>
+                                        <a href="{{ url_for('edit_goods',goodsid=item.id) }}">編集</a>
+                                        <a href="{{ url_for('delete_goods', goodsid=item.id) }}">删除</a>
+                                    </th>
+                                </tr>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </tbody>
+                      </table>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+
+{% endblock %}

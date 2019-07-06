@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 # app/db.py
 from app import db
 

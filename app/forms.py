@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from flask_wtf import FlaskForm
 #引入4种类型字段
 from wtforms import StringField, PasswordField, BooleanField, SubmitField,TextAreaField,SelectField

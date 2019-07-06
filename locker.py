@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from app import app, db
 from app.models import User,Locker,Category,Record
 

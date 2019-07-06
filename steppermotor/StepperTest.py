@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 #!/usr/bin/python
 #import Raspi_MotorHAT, Raspi_DCMotor, Raspi_Stepper 
 from steppermotor.Raspi_MotorHAT import Raspi_MotorHAT, Raspi_DCMotor, Raspi_StepperMotor

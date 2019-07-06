@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 #!/usr/bin/python
 
 from steppermotor.Raspi_PWM_Servo_Driver import PWM

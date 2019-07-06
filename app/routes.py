@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 # 全局域包
 import logging
 

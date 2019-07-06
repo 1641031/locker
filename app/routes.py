@@ -20,7 +20,7 @@ from flask import flash, redirect, url_for
 from flask_login import current_user, login_user
 
 #app/models.py ----User类
-from app.models import User,Locker,Category,Goods
+from app.models import User,Locker,Category,Goods,Record
 
 
 # -------------------------------------------------------------
@@ -308,16 +308,40 @@ def delete_goods(goodsid):
     return render_template('/goods/delete_goods.html', title="delete goods",form=form)
 
 ##物品页面 --总展示页面-----------
+
 @app.route('/goods', methods=['GET', 'POST'])
 # 当匿名用户(未登录的用户)查看首页时，无法重定向到登录界面
 @login_required
 def goods():
+
     if Category.query.all():
         categorys = Category.query.all()
     else:
         categorys = ""
     if Goods.query.all():
         goods = Goods.query.all()
+        # record = Goods_Record() 
     else:
         goods = ""
     return render_template('/goods/goods.html',categorys=categorys,goods=goods)
+
+from app.forms import Goods_Record
+@app.route('/record/<goodsid>', methods=['GET', 'POST'])
+@login_required
+def record(goodsid):
+    form = Goods_Record()
+    goods = Goods.query.get(goodsid)
+    if form.validate_on_submit():
+        record = Record(good_id=goodsid,use_record=form.use_record.data)
+        db.session.add(record)
+        db.session.commit()
+        flash("record is over!")
+        
+        return redirect(url_for('goods'))
+    return render_template('/goods/record.html',form=form,goods=goods)
+
+@app.route('/query_record/<goodsid>', methods=['GET', 'POST'])
+@login_required
+def query_record(goodsid):
+    querys = Record.query.filter_by(good_id=goodsid).all()
+    return render_template('/goods/query_record.html',querys=querys)

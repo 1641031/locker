@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-
+<!-- 引入基本模板 -->
+{% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
 
 <nav class="navbar navbar-default">
@@ -27,6 +28,7 @@
           </div>
         </div>
       </nav>
+    
     <!-- 内容 -->
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             {% if categorys %}
@@ -63,8 +65,8 @@
                                     <th>{{item.goodsname}}</th>
                                     <th>{{item.about_goods}}</th>
                                     <th>
-                                      <a href="">取出登记</a>
-                                      <a href="">记录查询</a>
+                                      <a href="{{ url_for('record',goodsid=item.id) }}">取出登记</a>
+                                      <a href="{{ url_for('query_record',goodsid=item.id) }}">记录查询</a>
                                         <a href="{{ url_for('edit_goods',goodsid=item.id) }}">編集</a>
                                         <a href="{{ url_for('delete_goods', goodsid=item.id) }}">删除</a>
                                     </th>
@@ -80,5 +82,7 @@
             {% endfor %}
             {% endif %}
           </div>
-
+    
+       
+    
 {% endblock %}

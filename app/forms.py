@@ -41,6 +41,7 @@ class RegistrationForm(FlaskForm):
 
 
 
+
 #储物柜的信息注册表单
 class CreateLocker(FlaskForm):
     lockername = StringField('Lockername', validators=[DataRequired()])
@@ -116,3 +117,10 @@ class Delete_Goods(FlaskForm):
 #物品视图界面
 class GoodsView(FlaskForm):
     goodsname = StringField('Goodsname', validators=[DataRequired()])
+
+
+#物品取出登录记录
+class Goods_Record(FlaskForm):
+    # goods_id = StringField('goodid', validators=[DataRequired()])
+    use_record = TextAreaField('use_record', validators=[Length(min=0, max=140)])
+    submit = SubmitField('Submit')

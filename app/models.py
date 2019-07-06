@@ -110,3 +110,15 @@ class Category(db.Model):
     def __repr__(self):
         return '<Category {}>'.format(self.name)
 
+class Record(db.Model):
+    __tablename__ = 'record'
+    id = db.Column(db.Integer, primary_key=True)
+    #保存对应物品的ID
+    good_id = db.Column(db.Integer)
+    #使用记录
+    use_record = db.Column(db.String(140))
+    #使用物品的时间
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    def __repr__(self):
+        return '<Record {}>'.format(self.use_record)
+

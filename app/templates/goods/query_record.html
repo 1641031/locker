@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+<!-- 引入基本模板 -->
+{% import 'bootstrap/wtf.html' as wtf %}
+
+<!-- app_content模板标签 -->
+{% block app_content %}
+<nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2 col-xs-2">
+                        <a c href="{{ url_for('goods') }}">
+                                <img class="" style="max-height: 70px;" src="{{ url_for('static', filename='images/back.svg') }}" />
+                            </a>
+                </div>
+                <div class="col-sm-8 col-xs-8 text-center">
+                    <h4>Record_Query</h4>
+                </div>
+                <!-- <div class="col-sm-2 col-xs-2">
+                    <a href="{{ url_for('createlocker') }}">
+                        <img class="" style="max-height: 70px;" alt="Brand" src="{{ url_for('static', filename='images/plus.svg') }}" />
+                    </a>
+                </div> -->
+            </div>
+        </div>
+    </nav>
+
+    <div class="row">
+            
+            <div class="center-block" style="max-width:240px">
+                    <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>时间</th>
+                                    <th>理由</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% if querys %}
+                              {% for query in querys %}
+                
+                                    <tr>
+                                        <th>{{loop.index}}</th>
+                                        <th>#</th>
+                                        <th>{{query.use_record}}</th>
+                                        <th>#</th>
+                                    </tr>
+              
+                              {% endfor %}
+                              {% endif %}
+                            </tbody>
+                          </table>
+
+                
+           
+            </div>
+        </div>
+
+{% endblock %}

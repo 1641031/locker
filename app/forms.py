@@ -124,3 +124,12 @@ class Goods_Record(FlaskForm):
     # goods_id = StringField('goodid', validators=[DataRequired()])
     use_record = TextAreaField('use_record', validators=[Length(min=0, max=140)])
     submit = SubmitField('Submit')
+
+
+
+#用户设置
+class User_Settings(FlaskForm):
+    now_num = StringField('now_num', validators=[DataRequired()])
+    locker_distance = StringField('locker_distance', validators=[DataRequired()])
+    maxlockernum =  StringField('max_locker_num', validators=[DataRequired()])
+    submit = SubmitField('Submit')

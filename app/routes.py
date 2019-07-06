@@ -46,6 +46,7 @@ def index():
     return render_template('index.html', title='Home Page', posts=posts)
 
 
+
 # 用户登录----------------------------------------
 # 读取和处理 next 查询字符串参数【重定向相关辅助包】
 @app.route('/login', methods=['GET', 'POST'])
@@ -180,7 +181,6 @@ from app.forms import DeleteLocker
 @login_required
 def delete_locker(lockerid):
     form = DeleteLocker()
-
     if form.validate_on_submit():
         locker = Locker.query.get(lockerid)
         if locker.lockername == form.lockername.data:
@@ -325,18 +325,36 @@ def goods():
         goods = ""
     return render_template('/goods/goods.html',categorys=categorys,goods=goods)
 
+
+
+
+
 from app.forms import Goods_Record
+#**
+# from steppermotor.StepperTest import CreateLocker
+#**
 @app.route('/record/<goodsid>', methods=['GET', 'POST'])
 @login_required
 def record(goodsid):
+    #**
+    # stepper = CreateLocker()
+    #**
     form = Goods_Record()
     goods = Goods.query.get(goodsid)
+    user = User.query.get(current_user.id)
     if form.validate_on_submit():
         record = Record(good_id=goodsid,use_record=form.use_record.data)
+        user = User.query.get(current_user.id)
         db.session.add(record)
+        # **
+        # stepnum=int(stepper.move(user.now_num, goods.locker.lockernumber, user.locker_distance, user.maxlockernum))
+        # print(stepnum)
+        # stepper.begin(stepnum)
+        # user.now_num = goods.locker.lockernumber
+        # db.session.add(user)
+        # **
         db.session.commit()
         flash("record is over!")
-        
         return redirect(url_for('goods'))
     return render_template('/goods/record.html',form=form,goods=goods)
 
@@ -345,3 +363,24 @@ def record(goodsid):
 def query_record(goodsid):
     querys = Record.query.filter_by(good_id=goodsid).all()
     return render_template('/goods/query_record.html',querys=querys)
+
+# 用户设置
+from app.forms import User_Settings
+@app.route('/user_settings/', methods=['GET', 'POST'])
+@login_required
+def user_settings():
+    form = User_Settings()
+    user = User.query.get(current_user.id)
+    if form.validate_on_submit():
+        user.now_num = form.now_num.data
+        user.locker_distance = form.locker_distance.data
+        user.maxlockernum = form.maxlockernum.data
+        db.session.add(user)
+        db.session.commit()
+        flash("init ok!!")
+        return redirect(url_for('index'))
+    elif request.method == 'GET':
+        form.now_num.data = user.now_num
+        form.locker_distance.data = user.locker_distance
+        form.maxlockernum.data = user.maxlockernum
+    return render_template('/user_settings.html',form=form)

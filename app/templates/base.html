@@ -32,6 +32,7 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('user_settings') }}">Settings</a></li>
             <!-- 如果用户未登录，就返回True-->
     {% if current_user.is_anonymous %}
     <li ><a href="{{ url_for('login') }}">Login<span class="sr-only">(current)</span></a></li>

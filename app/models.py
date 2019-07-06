@@ -67,7 +67,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     Lockers = db.relationship('Locker', backref='author', lazy='dynamic')
-
+    now_num = db.Column(db.Integer)
+    locker_distance = db.Column(db.Integer)
+    maxlockernum = db.Column(db.Integer)
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
